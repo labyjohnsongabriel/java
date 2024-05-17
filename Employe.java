@@ -1,5 +1,7 @@
 package projet;
 
+import java.math.BigDecimal;
+
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -17,14 +19,25 @@ import java.sql.*;
 import java.io.OutputStream;
 import javax.activation.ActivationDataFlavor;
 import javax.activation.DataSource;
-import com.itextpdf.text.DocumentException; 
-import java.io.FileNotFoundException;     
+import com.itextpdf.text.DocumentException;
+import java.io.FileNotFoundException;
 import javax.swing.JOptionPane;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class Employe extends javax.swing.JFrame {
 
@@ -49,6 +62,7 @@ public class Employe extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        imageStore1 = new com.itextpdf.text.html.simpleparser.ImageStore();
         jPanel1 = new javax.swing.JPanel();
         txt_Emp = new javax.swing.JTextField();
         txt_Nom = new javax.swing.JTextField();
@@ -75,6 +89,10 @@ public class Employe extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         conge = new javax.swing.JButton();
         Pointage1 = new javax.swing.JButton();
+        txt_Absence = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        btn_affichage = new javax.swing.JButton();
+        consulter = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -134,7 +152,7 @@ public class Employe extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Salaire");
+        jLabel6.setText("Absence");
 
         btn_Ajouter.setBackground(new java.awt.Color(0, 153, 204));
         btn_Ajouter.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
@@ -169,6 +187,7 @@ public class Employe extends javax.swing.JFrame {
         btn_recuperer.setBackground(new java.awt.Color(204, 204, 255));
         btn_recuperer.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
         btn_recuperer.setText("Récuperer");
+        btn_recuperer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_recuperer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btn_recupererMouseClicked(evt);
@@ -186,20 +205,20 @@ public class Employe extends javax.swing.JFrame {
         table_Employe.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
         table_Employe.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "N° Employe", "Nom", "Prénom(s)", "Poste", "Salaire"
+                "N° Employe", "Nom", "Prénom(s)", "Poste", "Salaire", "Absence"
             }
         ));
         table_Employe.setEditingRow(5);
         table_Employe.setRowHeight(25);
-        table_Employe.setRowMargin(5);
+        table_Employe.setRowMargin(6);
         table_Employe.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 table_EmployeMouseReleased(evt);
@@ -266,6 +285,7 @@ public class Employe extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setText("X");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
@@ -322,74 +342,120 @@ public class Employe extends javax.swing.JFrame {
             }
         });
 
+        txt_Absence.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
+        txt_Absence.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jLabel9.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Salaire");
+
+        btn_affichage.setBackground(new java.awt.Color(102, 102, 102));
+        btn_affichage.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
+        btn_affichage.setText("Affichage");
+        btn_affichage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_affichageMouseClicked(evt);
+            }
+        });
+        btn_affichage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_affichageActionPerformed(evt);
+            }
+        });
+
+        consulter.setBackground(new java.awt.Color(172, 84, 240));
+        consulter.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
+        consulter.setText("Consulter");
+        consulter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                consulterMouseClicked(evt);
+            }
+        });
+        consulter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consulterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane2))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txt_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(43, 43, 43)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(btn_Ajouter, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(20, 20, 20)
-                                    .addComponent(btn_Supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_Modifier1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(btn_recuperer, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btn_imprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txt_Emp, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(30, 30, 30)
-                                            .addComponent(jLabel8)))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(8, 8, 8)
-                                            .addComponent(txt_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(76, 76, 76)
-                                            .addComponent(jLabel3)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(txt_Prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txt_Poste, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txt_Salaire, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(40, 40, 40)
-                                            .addComponent(jLabel4)
-                                            .addGap(102, 102, 102)
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel6)
-                                            .addGap(56, 56, 56)))))
-                            .addGap(23, 23, 23)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(338, 338, 338)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(conge, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Pointage1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(consulter, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_Emp, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel8)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(txt_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(76, 76, 76)
+                                .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txt_Prenom, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_Poste, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_Salaire)
+                                .addGap(10, 10, 10))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel4)
+                                .addGap(102, 102, 102)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                                .addComponent(jLabel9)
+                                .addGap(67, 67, 67)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_Absence, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(17, 17, 17))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(btn_Ajouter, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(20, 20, 20)
+                                .addComponent(btn_Supprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btn_affichage, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addGap(29, 29, 29)
+                                .addComponent(txt_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btn_Modifier1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btn_recuperer, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btn_imprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,26 +464,28 @@ public class Employe extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conge, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Pointage1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Pointage1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(consulter, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_Prenom, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                            .addComponent(txt_Salaire)
-                            .addComponent(txt_Poste))
+                        .addComponent(txt_Absence)
                         .addGap(47, 47, 47))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_Emp, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txt_Salaire)
+                            .addComponent(txt_Poste, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_Prenom, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_Emp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                            .addComponent(txt_Nom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Supprimer)
@@ -425,34 +493,39 @@ public class Employe extends javax.swing.JFrame {
                     .addComponent(btn_recuperer)
                     .addComponent(btn_imprimer)
                     .addComponent(btn_Ajouter))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel10)
-                .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_affichage)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_recherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 984, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        pack();
+        setSize(new java.awt.Dimension(1105, 639));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-   
-    public void actu(){
+
+    public void actu() {
         try {
-             table_Employe.setDefaultEditor(Object.class, null);
+            table_Employe.setDefaultEditor(Object.class, null);
             Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
             String sql = "SELECT * FROM employe";
             PreparedStatement statement = connexion.prepareStatement(sql);
@@ -466,8 +539,9 @@ public class Employe extends javax.swing.JFrame {
                     result.getString("Nom"),
                     result.getString("Prenom"),
                     result.getString("Poste"),
-                    result.getInt("Salaire")
-                        
+                    result.getInt("Salaire"),
+                    result.getInt("Absence")
+
                 };
                 model.addRow(row);
             }
@@ -476,37 +550,53 @@ public class Employe extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données : " + ex.getMessage());
         }
     }
-    private void modifierEmploye(String numEmp, String nom, String prenom, String poste, int salaire, int ALLBITS1) {
-    try {
-        Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-        String sql = "UPDATE employe SET Nom = ?, Prenom = ?, Poste = ?, Salaire = ? WHERE NumEmp = ?";
-        PreparedStatement statement = connexion.prepareStatement(sql);
-        statement.setString(1, nom);
-        statement.setString(2, prenom);
-        statement.setString(3, poste);
-        statement.setInt(4, salaire);
-        statement.setString(5, numEmp);
 
-        int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
-            JOptionPane.showMessageDialog(this, "Employé modifié avec succès !");
-            
-                     txt_Emp.setText("");
-                    txt_Nom.setText("");
-                    txt_Prenom.setText("");
-                    txt_Poste.setText("");
-                    txt_Salaire.setText("");
-            actu(); 
-        } else {
-            JOptionPane.showMessageDialog(this, "Aucune modification effectuée !");
+    public static String convertirEnLettres(BigDecimal montant) {
+        // TODO: Implémentez la logique de conversion en lettres
+        return "À implémenter";
+    }
+
+    private void modifierEmploye(String numEmp, String nom, String prenom, String poste, int salaire, int absence) {
+
+        try {
+            Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+            String sql = "UPDATE employe SET Nom = ?, Prenom = ?, Poste = ?, Salaire = ?, Absence = ? WHERE NumEmp = ?";
+            PreparedStatement statement = connexion.prepareStatement(sql);
+            statement.setString(1, nom);
+            statement.setString(2, prenom);
+            statement.setString(3, poste);
+            int salaireApresAbsences = salaire - (absence * 10000);
+            if (salaireApresAbsences < 0) {
+                JOptionPane.showMessageDialog(this, "Le salaire ne peut pas être négatif après les déductions d'absence !");
+                return;
+            }
+            statement.setInt(4, salaireApresAbsences);
+            statement.setInt(5, absence);
+            statement.setString(6, numEmp);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(this, "Employé modifié avec succès !");
+
+                txt_Emp.setText("");
+                txt_Nom.setText("");
+                txt_Prenom.setText("");
+                txt_Poste.setText("");
+                txt_Salaire.setText("");
+                txt_Absence.setText("");
+
+                actu();
+            } else {
+                JOptionPane.showMessageDialog(this, "Aucune modification effectuée !");
+            }
+
+            connexion.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de la modification de l'employé : " + ex.getMessage());
         }
 
-        connexion.close();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Erreur lors de la modification de l'employé : " + ex.getMessage());
     }
-}
-    
+
     private void btn_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AjouterActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_AjouterActionPerformed
@@ -516,64 +606,81 @@ public class Employe extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_SupprimerActionPerformed
 
     private void btn_recupererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recupererActionPerformed
-             int selectedRow = table_Employe.getSelectedRow();
+        int selectedRow = table_Employe.getSelectedRow();
         if (selectedRow != -1) {
-        String numEmp = (String) table_Employe.getValueAt(selectedRow, 0);
-        String nom = (String) table_Employe.getValueAt(selectedRow, 1);
-        String prenom = (String) table_Employe.getValueAt(selectedRow, 2);
-        String poste = (String) table_Employe.getValueAt(selectedRow, 3);
-        int salaire = (int) table_Employe.getValueAt(selectedRow, 4);
-        
-        txt_Emp.setText(numEmp);
-        txt_Nom.setText(nom);
-        txt_Prenom.setText(prenom);
-        txt_Poste.setText(poste);
-        txt_Salaire.setText(String.valueOf(salaire));
-    } else {
-        JOptionPane.showMessageDialog(this, "Veuillez sélectionner un employé à modifier.");
-        return;
-    }
-        
+            String numEmp = (String) table_Employe.getValueAt(selectedRow, 0);
+            String nom = (String) table_Employe.getValueAt(selectedRow, 1);
+            String prenom = (String) table_Employe.getValueAt(selectedRow, 2);
+            String poste = (String) table_Employe.getValueAt(selectedRow, 3);
+            int salaire = (int) table_Employe.getValueAt(selectedRow, 4);
+            int absence = (int) table_Employe.getValueAt(selectedRow, 5);
+
+            txt_Emp.setText(numEmp);
+            txt_Nom.setText(nom);
+            txt_Prenom.setText(prenom);
+            txt_Poste.setText(poste);
+            txt_Salaire.setText(String.valueOf(salaire));
+            txt_Absence.setText(String.valueOf(absence));
+        } else {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un employé à modifier.");
+            return;
+        }
+
     }//GEN-LAST:event_btn_recupererActionPerformed
 
     private void btn_AjouterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_AjouterMouseClicked
         if (txt_Emp.getText().isEmpty() || txt_Nom.getText().isEmpty() || txt_Prenom.getText().isEmpty() || txt_Poste.getText().isEmpty() || txt_Salaire.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vous avez remplir !");
+            JOptionPane.showMessageDialog(this, "Vous devez remplir tous les champs !");
         } else {
             try {
-
                 Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-                String sql = "INSERT INTO employe (NumEmp, Nom, Prenom, Poste, Salaire) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement statement = connexion.prepareStatement(sql);
-                statement.setString(1, txt_Emp.getText());
-                statement.setString(2, txt_Nom.getText());
-                statement.setString(3, txt_Prenom.getText());
-                statement.setString(4, txt_Poste.getText());
-                statement.setInt(5, Integer.valueOf(txt_Salaire.getText()));
-                int row = statement.executeUpdate();
 
-                if (row > 0) {
-                    JOptionPane.showMessageDialog(this, "Employé ajouté avec succès !");
-                  
-                    
-                    txt_Emp.setText("");
-                    txt_Nom.setText("");
-                    txt_Prenom.setText("");
-                    txt_Poste.setText("");
-                    txt_Salaire.setText("");
-                    
-                    actu();
-                    
-                    
+                String numEmp = txt_Emp.getText();
+                String nom = txt_Nom.getText();
+                String prenom = txt_Prenom.getText();
+                String poste = txt_Poste.getText();
+                int salaire = Integer.valueOf(txt_Salaire.getText());
+                int absence = Integer.valueOf(txt_Absence.getText());
+
+                int salaireApresAbsences = salaire - (absence * 10000);
+
+                if (salaireApresAbsences < 0) {
+                    JOptionPane.showMessageDialog(this, "Le salaire ne peut pas être négatif après les déductions d'absence !");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Échec de l'ajout de l'employé !");
+
+                    String sql = "INSERT INTO employe (NumEmp, Nom, Prenom, Poste, Salaire, Absence) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement statement = connexion.prepareStatement(sql);
+                    statement.setString(1, numEmp);
+                    statement.setString(2, nom);
+                    statement.setString(3, prenom);
+                    statement.setString(4, poste);
+                    statement.setInt(5, salaireApresAbsences);
+                    statement.setInt(6, absence);
+                    int row = statement.executeUpdate();
+
+                    if (row > 0) {
+                        JOptionPane.showMessageDialog(this, "Employé ajouté avec succès !");
+
+                        txt_Emp.setText("");
+                        txt_Nom.setText("");
+                        txt_Prenom.setText("");
+                        txt_Poste.setText("");
+                        txt_Salaire.setText("");
+                        txt_Absence.setText("");
+
+                        actu();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Échec de l'ajout de l'employé !");
+                    }
                 }
                 connexion.close();
-
-            } catch (Exception Ex) {
-                JOptionPane.showMessageDialog(this, "Erreur");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de la connexion à la base de données : " + ex.getMessage());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Veuillez entrer un nombre valide pour le salaire et le nombre d'absences !");
             }
         }
+
     }//GEN-LAST:event_btn_AjouterMouseClicked
 
     private void btn_Modifier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Modifier1ActionPerformed
@@ -609,9 +716,11 @@ public class Employe extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_SupprimerMouseClicked
 
     private void btn_Modifier1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Modifier1MouseClicked
-       int salaire = 0; 
+        int salaire = 0;
+        int absence = 0;
         try {
             salaire = Integer.parseInt(txt_Salaire.getText());
+            absence = Integer.parseInt(txt_Absence.getText());
         } catch (NumberFormatException ex) {
 
             System.out.println("Erreur de conversion : " + ex.getMessage());
@@ -622,7 +731,7 @@ public class Employe extends javax.swing.JFrame {
         String prenom = txt_Prenom.getText();
         String poste = txt_Poste.getText();
 
-         modifierEmploye(numEmp, nom, prenom, poste,salaire,ALLBITS);
+        modifierEmploye(numEmp, nom, prenom, poste, salaire, absence);
 
 
     }//GEN-LAST:event_btn_Modifier1MouseClicked
@@ -650,57 +759,72 @@ public class Employe extends javax.swing.JFrame {
                         result.getString("Nom"),
                         result.getString("Prenom"),
                         result.getString("poste"),
-                        result.getInt("Salaire")
+                        result.getInt("Salaire"),
+                        result.getInt("absence")
+
                     };
                     model.addRow(row);
-                    
-                    actu();
+
                 }
-                
 
                 connexion.close();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Erreur lors de la recherche : " + ex.getMessage());
             }
+
         } else {
-            JOptionPane.showMessageDialog(this, "Veuillez saisir un terme de recherche.");
+
+            actu();
         }// TODO add your handling code here:
     }//GEN-LAST:event_txt_rechercheActionPerformed
 
     private void btn_imprimerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_imprimerMouseClicked
-        
-      /*  Document document = new Document();
-        try {
-            PdfWriter.getInstance(document, new FileOutputStream("formulaire_employes.pdf"));
-            document.open();
-            document.add(new Paragraph("Formulaire Employés\n\n"));
-             Iterable<String[]> data = null;
-            for (String[] row : data) {
-                String numEmp = row[0];
-                String nom = row[1];
-                String prenom = row[2];
-                String poste = row[3];
-                String salaire = row[4];
-                
-                String salaireEnLettres = convertirSalaireEnLettres(salaire);
-                
-                document.add(new Paragraph("Numéro Employé: " + numEmp));
+        int selectedRow = table_Employe.getSelectedRow();
+        if (selectedRow != -1) {
+            String NumEmp = (String) table_Employe.getValueAt(selectedRow, 0);
+            String nom = (String) table_Employe.getValueAt(selectedRow, 1);
+            String prenom = (String) table_Employe.getValueAt(selectedRow, 2);
+            String poste = (String) table_Employe.getValueAt(selectedRow, 3);
+            int salaire = (int) table_Employe.getValueAt(selectedRow, 4);
+
+            Document document = new Document();
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream("rapport.pdf"));
+                document.open();
+
+                document.add(new Paragraph("Date : 12/03/24"));
                 document.add(new Paragraph("Nom: " + nom));
-                document.add(new Paragraph("Prénom: " + prenom));
+                document.add(new Paragraph("Prenom: " + prenom));
                 document.add(new Paragraph("Poste: " + poste));
-                document.add(new Paragraph("Salaire: " + salaireEnLettres + " (" + salaire + ")"));
-                document.add(new Paragraph("\n"));
-                
+
+                Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+
+                String queryConge = "SELECT COUNT(*) AS Absence FROM employe WHERE NumEmp = ?";
+                PreparedStatement statementConge = connexion.prepareStatement(queryConge);
+                statementConge.setString(1, NumEmp);
+                ResultSet resultSetConge = statementConge.executeQuery();
+
+                while (resultSetConge.next()) {
+                    document.add(new Paragraph("Nombre d’absence: " + resultSetConge.getInt("Absence")));
+                }
+
+                BigDecimal montant = new BigDecimal(salaire);
+
+                String montantEnLettres = convertirEnLettres(montant);
+                document.add(new Paragraph("Montant : " + montant + " AR (" + montantEnLettres + " Ariary)"));
+
                 document.close();
-            JOptionPane.showMessageDialog(null, "PDF généré avec succès !");
-        } catch (DocumentException | FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Erreur lors de la génération du PDF : " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Le rapport a été généré avec succès");
+                connexion.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Une erreur s'est produite lors de la génération du rapport.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un employé.");
         }
 
-}       catch (FileNotFoundException ex) {
-            Logger.getLogger(Employe.class.getName()).log(Level.SEVERE, null, ex);
-        }
-*/
 
     }//GEN-LAST:event_btn_imprimerMouseClicked
 
@@ -722,7 +846,7 @@ public class Employe extends javax.swing.JFrame {
 
     private void congeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_congeMouseClicked
         Conge con = new Conge();
-        con .show();
+        con.show();
     }//GEN-LAST:event_congeMouseClicked
 
     private void Pointage1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Pointage1MouseClicked
@@ -741,6 +865,84 @@ public class Employe extends javax.swing.JFrame {
     private void btn_recupererMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_recupererMouseReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_recupererMouseReleased
+
+    private void btn_affichageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_affichageMouseClicked
+        String selectedDate = "2024-11-08";
+
+        String sql = "SELECT e.NumEmp, e.Nom, e.Prenom "
+                + "FROM employe e "
+                + "LEFT JOIN conge c ON e.NumEmp = c.NumEmp "
+                + "WHERE (c.dateDemande <= ? AND c.dateRetour >= ?) OR c.dateDemande IS NULL";
+
+        try {
+            Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+            PreparedStatement statement = connexion.prepareStatement(sql);
+            statement.setString(1, selectedDate);
+            statement.setString(2, selectedDate);
+
+            ResultSet result = statement.executeQuery();
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Numéro Employé");
+            model.addColumn("Nom");
+            model.addColumn("Prénom");
+
+            while (result.next()) {
+                String numEmp = result.getString("NumEmp");
+                String nom = result.getString("Nom");
+                String prenom = result.getString("Prenom");
+                model.addRow(new Object[]{numEmp, nom, prenom});
+            }
+
+            table_Employe.setModel(model);
+
+            connexion.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        }
+
+    }//GEN-LAST:event_btn_affichageMouseClicked
+
+    private void btn_affichageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_affichageActionPerformed
+
+
+    }//GEN-LAST:event_btn_affichageActionPerformed
+
+    private void consulterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_consulterMouseClicked
+
+        String sql = "SELECT NumEmp, Nom, Prenom, jours_restants_conge FROM employe";
+
+        try {
+            Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+            Statement statement = connexion.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Numéro Employé");
+            model.addColumn("Nom");
+            model.addColumn("Prénom");
+            model.addColumn("Jours de congé restants");
+
+            while (result.next()) {
+                String numEmp = result.getString("NumEmp");
+                String nom = result.getString("Nom");
+                String prenom = result.getString("Prenom");
+                int joursRestants = result.getInt("jours_restants_conge");
+                model.addRow(new Object[]{numEmp, nom, prenom, joursRestants});
+            }
+
+            connexion.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_consulterMouseClicked
+
+    private void consulterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consulterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_consulterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -782,9 +984,12 @@ public class Employe extends javax.swing.JFrame {
     private javax.swing.JButton btn_Ajouter;
     private javax.swing.JButton btn_Modifier1;
     private javax.swing.JButton btn_Supprimer;
+    private javax.swing.JButton btn_affichage;
     private javax.swing.JButton btn_imprimer;
     private javax.swing.JButton btn_recuperer;
     private javax.swing.JButton conge;
+    private javax.swing.JButton consulter;
+    private com.itextpdf.text.html.simpleparser.ImageStore imageStore1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -794,12 +999,14 @@ public class Employe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable table_Employe;
+    private javax.swing.JTextField txt_Absence;
     private javax.swing.JTextField txt_Emp;
     private javax.swing.JTextField txt_Nom;
     private javax.swing.JTextField txt_Poste;
@@ -824,5 +1031,4 @@ public class Employe extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-   
 }

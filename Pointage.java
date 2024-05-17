@@ -4,11 +4,6 @@
  * and open the template in the editor.
  */
 package projet;
-import java.sql.Date; 
-import java.text.SimpleDateFormat;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -20,24 +15,10 @@ import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.time.*;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Pointage extends javax.swing.JFrame {
 
@@ -58,11 +39,14 @@ public class Pointage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txt_pointage = new javax.swing.JTextField();
+        jCommonResources1 = new org.jfree.resources.JCommonResources();
+        jCommonResources2 = new org.jfree.resources.JCommonResources();
+        jCommonResources3 = new org.jfree.resources.JCommonResources();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txt_Epm = new javax.swing.JTextField();
-        txt_pointage = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -71,13 +55,15 @@ public class Pointage extends javax.swing.JFrame {
         btn_afficher2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         table_Pointage = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
-        txt_recherche2 = new javax.swing.JTextField();
         btn_Modifier2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        datepoin = new javax.swing.JTextField();
+        date_pointage = new com.toedter.calendar.JDateChooser();
+        combo = new javax.swing.JComboBox<>();
+
+        txt_pointage.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+        txt_pointage.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -91,9 +77,6 @@ public class Pointage extends javax.swing.JFrame {
 
         txt_Epm.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
         txt_Epm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        txt_pointage.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
-        txt_pointage.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -161,6 +144,8 @@ public class Pointage extends javax.swing.JFrame {
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
+                {null, null, null},
+                {null, null, null},
                 {null, null, null}
             },
             new String [] {
@@ -171,23 +156,6 @@ public class Pointage extends javax.swing.JFrame {
         table_Pointage.setRowHeight(25);
         table_Pointage.setRowMargin(3);
         jScrollPane2.setViewportView(table_Pointage);
-
-        jLabel7.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Recherche");
-
-        txt_recherche2.setFont(new java.awt.Font("Cambria", 0, 12)); // NOI18N
-        txt_recherche2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_recherche2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txt_recherche2MouseClicked(evt);
-            }
-        });
-        txt_recherche2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_recherche2ActionPerformed(evt);
-            }
-        });
 
         btn_Modifier2.setBackground(new java.awt.Color(0, 204, 0));
         btn_Modifier2.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
@@ -225,54 +193,46 @@ public class Pointage extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(771, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(107, 107, 107)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(126, Short.MAX_VALUE)))
+                    .addComponent(jLabel6)
+                    .addContainerGap(118, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel5)
-                .addGap(0, 37, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(4, 4, 4)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(14, Short.MAX_VALUE)))
+                    .addContainerGap()
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        datepoin.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
-        datepoin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        date_pointage.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+
+        combo.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "OUI\t", "NON", " " }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(datepoin, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(jLabel2)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(149, 149, 149)
-                                .addComponent(jLabel3))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(98, 98, 98)
-                                .addComponent(txt_Epm, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel2)
+                        .addGap(162, 162, 162)
+                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 19, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_Ajouter2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_Supprimer2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,67 +240,71 @@ public class Pointage extends javax.swing.JFrame {
                         .addComponent(btn_Modifier2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(txt_pointage, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(105, 105, 105))
+                    .addComponent(btn_afficher2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btn_afficher2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel4)))
+                .addGap(139, 139, 139))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(257, 257, 257)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 782, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addComponent(txt_recherche2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(date_pointage, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(txt_Epm, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(83, 83, 83)
+                        .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(2, 2, 2)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(datepoin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_pointage, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(txt_Epm))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_Epm, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(date_pointage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(combo)
+                        .addGap(4, 4, 4)))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Ajouter2)
                     .addComponent(btn_Supprimer2)
                     .addComponent(btn_Modifier2)
                     .addComponent(btn_afficher2))
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_recherche2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -348,18 +312,15 @@ public class Pointage extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(788, 425));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
         public void liste(){
                try {
@@ -382,18 +343,21 @@ public class Pointage extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données : " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données : " + ex.getMessage() ,"Erreur lors du chargement des données ", JOptionPane.ERROR_MESSAGE);
         }
         }
         
-        private void modifierPointage(Date datPoint, String NumEmp, String point) {
+        private void modifierPointage(String datPoint, String NumEmp, String point) {
             
             
     try {
         Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
         String sql = "UPDATE pointage SET datePointage = ?, pointage = ? WHERE NumEmp = ?";
         PreparedStatement statement = connexion.prepareStatement(sql);
-        statement.setDate(1, new java.sql.Date(datPoint.getTime())); 
+        System.err.println("PreparedStatement statement");
+         java.sql.Date datePointageSql = new java.sql.Date(date_pointage.getDate().getTime());
+         statement.setDate(1, datePointageSql);
+
         statement.setString(2, point);
         statement.setString(3, NumEmp);
 
@@ -403,8 +367,8 @@ public class Pointage extends javax.swing.JFrame {
 
             
             txt_Epm.setText("");
-            txt_pointage.setText("");
-            datepoin.setText("");
+           combo.setSelectedIndex(0);
+            date_pointage.setDate(null);
 
          
             liste();
@@ -423,28 +387,33 @@ public class Pointage extends javax.swing.JFrame {
     
     
     private void btn_Ajouter2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Ajouter2MouseClicked
-        if ( txt_Epm.getText().isEmpty() || txt_pointage.getText().isEmpty()) {
+        if ( txt_Epm.getText().isEmpty() || combo.getSelectedItem()== null) {
             JOptionPane.showMessageDialog(this, "Vous avez remplir !");
         } else {
-            try {
+                try {
+         Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+         String sql = "INSERT INTO pointage (datePointage, NumEmp, pointage) VALUES (?, ?, ?)";
+         PreparedStatement statement = connexion.prepareStatement(sql);
 
-                Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-                String sql = "INSERT INTO pointage (datePointage, NumEmp, pointage) VALUES (?, ?, ?)";
-                PreparedStatement statement = connexion.prepareStatement(sql);
-              statement.setString(1, datepoin.getText());
-                statement.setString(2, txt_Epm.getText());
-                statement.setString(3, txt_pointage.getText());
-                int row = statement.executeUpdate();
+        
+       java.sql.Date datePointageSql = new java.sql.Date(date_pointage.getDate().getTime());
+        statement.setDate(1, datePointageSql);
+        statement.setString(2, txt_Epm.getText());
+        statement.setString(3, (String) combo.getSelectedItem()); 
 
-                if (row > 0) {
-                    JOptionPane.showMessageDialog(this, "Pointage ajouté avec succès !");
-                   
-                    datepoin.setText("");
-                    txt_Epm.setText("");
-                    txt_pointage.setText("");
-                    liste();
-                    
-                } else {
+        int row = statement.executeUpdate();
+
+         if (row > 0) {
+             JOptionPane.showMessageDialog(this, "Pointage ajouté avec succès !");
+
+          
+             date_pointage.setDate(null);
+             txt_Epm.setText("");
+             combo.setSelectedIndex(0);
+
+            
+             liste();
+         } else {
                     JOptionPane.showMessageDialog(this, "Échec de l'ajout de la pointage !");
                 }
                 connexion.close();
@@ -477,7 +446,7 @@ public class Pointage extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "pointage supprimé avec succès !");
                     liste();
                    
-                    //chargerDonneesTable();
+                   
 
                 }
                 connexion.close();
@@ -490,16 +459,16 @@ public class Pointage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_Supprimer2ActionPerformed
 
     private void btn_afficher2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_afficher2MouseClicked
-                   int selectedRow = table_Pointage.getSelectedRow();
+        int selectedRow = table_Pointage.getSelectedRow();
         if (selectedRow != -1) {
-        java.util.Date datePoint = (java.util.Date) table_Pointage.getValueAt(selectedRow, 0);
+        Date date = (Date) table_Pointage.getValueAt(selectedRow, 0);
         String NumEmp = (String) table_Pointage.getValueAt(selectedRow, 1);
         String pointage = (String) table_Pointage.getValueAt(selectedRow, 2);
-       
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-         String dateDebutStr = dateFormat.format(datepoin);
+          
         txt_Epm.setText(NumEmp);
-        txt_pointage.setText(pointage);
+        txt_pointage.setText(pointage); 
+        combo.setSelectedIndex(1);
+        date_pointage.setDate(date);
 
     } else {
         JOptionPane.showMessageDialog(this, "Veuillez sélectionner un employé à modifier.");
@@ -508,54 +477,19 @@ public class Pointage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_afficher2MouseClicked
 
     private void btn_afficher2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_afficher2ActionPerformed
-      liste();
+      
     }//GEN-LAST:event_btn_afficher2ActionPerformed
 
-    private void txt_recherche2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_recherche2MouseClicked
-
-    }//GEN-LAST:event_txt_recherche2MouseClicked
-
-    private void txt_recherche2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_recherche2ActionPerformed
-        String recherche = txt_recherche2.getText();
-        if (!recherche.isEmpty()) {
-            try {
-                Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-                String sql = "SELECT * FROM pointage WHERE DatePointage LIKE ?";
-                PreparedStatement statement = connexion.prepareStatement(sql);
-                statement.setString(1, "%" + recherche + "%");
-                statement.setString(2, "%" + recherche + "%");
-                ResultSet result = statement.executeQuery();
-                DefaultTableModel model = (DefaultTableModel) table_Pointage.getModel();
-                model.setRowCount(0);
-                liste();
-                while (result.next()) {
-                    Object[] row = {
-                        result.getString("NumEmp"),
-                        result.getString("Nom"),
-                        result.getString("Prenom"),
-                        result.getString("poste"),
-                        result.getInt("Salaire")
-                          
-                    };
-                    model.addRow(row);
-                }
-
-                connexion.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Erreur lors de la recherche : " + ex.getMessage());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Veuillez saisir un terme de recherche.");
-        }// TODO add your handling code here:
-    }//GEN-LAST:event_txt_recherche2ActionPerformed
-
     private void btn_Modifier2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Modifier2MouseClicked
-        String datPoint = datepoin.getText();
-        String NumEmp = txt_Epm.getText();
-        String point = txt_pointage.getText();
-       
+    String datPoint = ""; 
+    String NumEmp = txt_Epm.getText(); 
+    String point = (String) combo.getSelectedItem(); 
+
  
-         modifierpointage( datPoint,  NumEmp, point);
+
+    
+    modifierPointage(datPoint, NumEmp, point);
+
     }//GEN-LAST:event_btn_Modifier2MouseClicked
 
     private void btn_Modifier2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Modifier2ActionPerformed
@@ -611,14 +545,17 @@ public class Pointage extends javax.swing.JFrame {
     private javax.swing.JButton btn_Modifier2;
     private javax.swing.JButton btn_Supprimer2;
     private javax.swing.JButton btn_afficher2;
-    private javax.swing.JTextField datepoin;
+    private javax.swing.JComboBox<String> combo;
+    private com.toedter.calendar.JDateChooser date_pointage;
+    private org.jfree.resources.JCommonResources jCommonResources1;
+    private org.jfree.resources.JCommonResources jCommonResources2;
+    private org.jfree.resources.JCommonResources jCommonResources3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -626,7 +563,6 @@ public class Pointage extends javax.swing.JFrame {
     private javax.swing.JTable table_Pointage;
     private javax.swing.JTextField txt_Epm;
     private javax.swing.JTextField txt_pointage;
-    private javax.swing.JTextField txt_recherche2;
     // End of variables declaration//GEN-END:variables
 
     private void modifierpointage(String datPoint, String NumEmp, String point) {

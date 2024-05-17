@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -40,7 +39,6 @@ public class Conge extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_Emp1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txt_Motif = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -55,9 +53,10 @@ public class Conge extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txt_NbrJours = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        dateDem = new javax.swing.JTextField();
-        dateRetour = new javax.swing.JTextField();
         btn_recuperer1 = new javax.swing.JButton();
+        date_retours = new com.toedter.calendar.JDateChooser();
+        date_fin = new com.toedter.calendar.JDateChooser();
+        txt_motif = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -78,9 +77,6 @@ public class Conge extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("N° Employe");
 
-        txt_Motif.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
-        txt_Motif.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
         jLabel4.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Motif");
@@ -91,11 +87,11 @@ public class Conge extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Date Demande");
+        jLabel6.setText("Date Démande");
 
         jLabel7.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Date Retours");
+        jLabel7.setText("Date Retour");
 
         table_Conge.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
         table_Conge.setModel(new javax.swing.table.DefaultTableModel(
@@ -181,8 +177,8 @@ public class Conge extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -216,65 +212,73 @@ public class Conge extends javax.swing.JFrame {
             }
         });
 
+        date_retours.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+
+        date_fin.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+
+        txt_motif.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+        txt_motif.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vacance Annuel", "Maladie", "Congé Matérnité", "Congé Patérnité", "Congés parentaux", "Formation Professionnel", "Déménage", "Décés Familial", "Mariage", "Voyage", " " }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(jLabel2)
-                        .addGap(120, 120, 120)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txt_Conge, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txt_Emp1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(dateDem, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51)
-                                .addComponent(dateRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_Motif, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel4)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(txt_NbrJours, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 9, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(36, 36, 36))))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(btn_Ajouter1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_Supprimer1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_Modifier1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_recuperer1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(269, 269, 269)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
+                                .addComponent(jLabel2)
+                                .addGap(120, 120, 120)
+                                .addComponent(jLabel3))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(txt_Conge, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_Emp1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(107, 107, 107)
+                                .addComponent(jLabel4)
+                                .addGap(150, 150, 150))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(txt_motif, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(txt_NbrJours, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(57, 57, 57)
                         .addComponent(jLabel6)
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel7)))
+                        .addGap(154, 154, 154)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(btn_Ajouter1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(date_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_Supprimer1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_Modifier1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_recuperer1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(date_retours, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 27, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(313, 313, 313)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -285,32 +289,31 @@ public class Conge extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_Conge, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txt_Emp1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_Motif, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_NbrJours, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_Conge)
+                    .addComponent(txt_Emp1)
+                    .addComponent(txt_NbrJours, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_motif))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateDem, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateRetour, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(date_retours, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(date_fin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Ajouter1)
                     .addComponent(btn_Supprimer1)
                     .addComponent(btn_Modifier1)
                     .addComponent(btn_recuperer1))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel10)
-                .addGap(28, 28, 28)
+                .addGap(37, 37, 37)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -319,16 +322,15 @@ public class Conge extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(890, 651));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     private void listage(){
       try {
@@ -356,76 +358,122 @@ public class Conge extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erreur lors du chargement des données : " + ex.getMessage());
         }  
    
-    }
-       private void modifierConge(String Conge, String NumEmp, String Motif, int Nbrjours , Date date , Date dateretou) {
-         try {
-        Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-        String sql = "UPDATE conge SET  NumConge = ?, NumEmp = ? ,Motif = ?, NbrJours = ?, dateDemande = ?, dateRetour = ? WHERE NumConge = ?";
+    }private void modifierConge(String Conge, String NumEmp, String Motif, int Nbrjours , java.sql.Date date , java.sql.Date dateretou) {
+    try {
+    Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+    
+    
+    java.util.Date dateDebut = date_fin.getDate();
+    java.util.Date dateFin = date_retours.getDate();
+    
+    
+    long differenceEnMillis = dateFin.getTime() - dateDebut.getTime();
+    long differenceEnJours = differenceEnMillis / (1000 * 60 * 60 * 24);
+    
+    if (differenceEnJours <= 30) {
+        String sql = "UPDATE conge SET NumConge = ?, NumEmp = ?, Motif = ?, NbrJours = ?, dateDemande = ?, dateRetour = ? WHERE NumConge = ?";
         PreparedStatement statement = connexion.prepareStatement(sql);
         statement.setString(1, Conge);
         statement.setString(2, NumEmp);
         statement.setString(3, Motif);
         statement.setInt(4, Nbrjours);
-         statement.setDate(5, date);
+        statement.setDate(5, date);
         statement.setDate(6, dateretou);
-        
+        statement.setString(7, Conge); 
 
         int rowsUpdated = statement.executeUpdate();
         if (rowsUpdated > 0) {
             JOptionPane.showMessageDialog(this, "Congé modifié avec succès !");
-            
-                    txt_Conge.setText("");
-                    txt_Emp1.setText("");
-                    txt_Motif.setText("");
-                    txt_NbrJours.setText("");
-                    
-                     listage();
-             
+            txt_Conge.setText("");
+            txt_Emp1.setText("");
+            txt_motif.setSelectedIndex(0);
+            txt_NbrJours.setText("");
+            date_fin.setDate(null); 
+            date_retours.setDate(null);
+            listage();
         } else {
             JOptionPane.showMessageDialog(this, "Aucune modification effectuée !");
         }
-
-        connexion.close();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Erreur lors de la modification du Congé : " + ex.getMessage());
+    } else {
+        JOptionPane.showMessageDialog(this, "La période de congé ne peut pas dépasser 30 jours !");
     }
- }
-    private void btn_Ajouter1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Ajouter1MouseClicked
-        if (txt_Conge.getText().isEmpty() || txt_Emp1.getText().isEmpty() || txt_Motif.getText().isEmpty() || txt_NbrJours.getText().isEmpty() ) {
-            JOptionPane.showMessageDialog(this, "Vous avez remplir !");
-        } else {
-            try {
 
-                Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
-                String sql = "INSERT INTO conge (NumConge,NumEmp, Motif, NbrJours,DateDemande, DateRetour) VALUES (?, ?, ?,?,?,?)";
+    connexion.close();
+} catch (SQLException ex) {
+    JOptionPane.showMessageDialog(this, "Erreur lors de la modification du Congé : " + ex.getMessage());
+}
+
+}
+
+
+    private void btn_Ajouter1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Ajouter1MouseClicked
+     if (txt_Conge.getText().isEmpty() || txt_Emp1.getText().isEmpty() ||txt_motif.getSelectedItem()== null || txt_NbrJours.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Vous devez remplir tous les champs !");
+} else {
+    try {
+        
+        int nombreJoursConge = Integer.parseInt(txt_NbrJours.getText());
+        
+        
+        if (nombreJoursConge > 30) {
+            JOptionPane.showMessageDialog(this, "Notification : Le nombre de congé des employés par an est de 30 jours. Le nombre de jours de congé pris dépasse cette limite.");
+        } else {
+         
+            Connection connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestion_pointage", "root", "");
+            
+           
+            java.util.Date dateDebut = date_fin.getDate();
+            java.util.Date dateFin = date_retours.getDate();
+            
+            
+            long differenceEnMillis = dateFin.getTime() - dateDebut.getTime();
+            long differenceEnJours = differenceEnMillis / (1000 * 60 * 60 * 24);
+            
+           
+            if (differenceEnJours <= 30) {
+                String sql = "INSERT INTO conge (NumConge, NumEmp, Motif, NbrJours, DateDemande, DateRetour) VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement statement = connexion.prepareStatement(sql);
                 statement.setString(1, txt_Conge.getText());
                 statement.setString(2, txt_Emp1.getText());
-                statement.setString(3, txt_Motif.getText());
+                statement.setString(3, (String) txt_motif.getSelectedItem());
                 statement.setString(4, txt_NbrJours.getText());
-                statement.setString(5, dateDem.getText());
-                statement.setString(6, dateRetour.getText());
-                
+            
+                java.sql.Timestamp dateFinTimestamp = new java.sql.Timestamp(date_fin.getDate().getTime());
+                statement.setTimestamp(5, dateFinTimestamp);
+
+                java.sql.Timestamp dateRetourTimestamp = new java.sql.Timestamp(date_retours.getDate().getTime());
+                statement.setTimestamp(6, dateRetourTimestamp);
+
                 int row = statement.executeUpdate();
 
                 if (row > 0) {
-                    JOptionPane.showMessageDialog(this, "Congé  ajouté avec succès !");
-                    
+                    JOptionPane.showMessageDialog(this, "Congé ajouté avec succès !");
                     txt_Conge.setText("");
                     txt_Emp1.setText("");
-                    txt_Motif.setText("");
+                    txt_motif.setSelectedIndex(0);
                     txt_NbrJours.setText("");
+                    date_fin.setDate(null); 
+                    date_retours.setDate(null); 
                     listage();
-                    
                 } else {
-                    JOptionPane.showMessageDialog(this, "Échec de l'ajout de l'employé !");
+                    JOptionPane.showMessageDialog(this, "Échec de l'ajout du congé !");
                 }
-                connexion.close();
-
-            } catch (Exception Ex) {
-                JOptionPane.showMessageDialog(this, "Numéro employe n'est pas existe");
+            } else {
+                JOptionPane.showMessageDialog(this, "La période de congé ne peut pas dépasser 30 jours !");
             }
+            connexion.close();
         }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Le nombre de jours de congé doit être un nombre valide !");
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Une erreur s'est produite lors de l'ajout du congé : " + ex.getMessage());
+    }
+}
+
+
+
+  
     }//GEN-LAST:event_btn_Ajouter1MouseClicked
 
     private void btn_Ajouter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Ajouter1ActionPerformed
@@ -461,21 +509,30 @@ public class Conge extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_Supprimer1ActionPerformed
 
     private void btn_Modifier1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_Modifier1MouseClicked
-         int Nbrjours = 0; 
-        try {
-            Nbrjours = Integer.parseInt(txt_NbrJours.getText());
-        } catch (NumberFormatException ex) {
+                 int Nbrjours = 0;
+            try {
+                Nbrjours = Integer.parseInt(txt_NbrJours.getText());
+            } catch (NumberFormatException ex) {
+                System.out.println("Erreur de conversion : " + ex.getMessage());
+            }
 
-            System.out.println("Erreur de conversion : " + ex.getMessage());
-        }
+            String Conge = txt_Conge.getText();
+            String NumEmp = txt_Emp1.getText();
+            String Motif = (String) txt_motif.getSelectedItem(); 
+            String nbrJours = txt_NbrJours.getText();
 
-        String Conge = txt_Conge.getText();
-        String NumEmp = txt_Emp1.getText();
-        String Motif = txt_Motif.getText();
-        String date = dateDem.getText();
-        String dateretou = dateRetour.getText();
-       
-         modifierConge( Conge,NumEmp, Motif, Nbrjours, date ,dateretou); 
+            java.sql.Date date = null;
+            java.sql.Date dateRetour = null;
+            try {
+                date = new java.sql.Date(date_fin.getDate().getTime());
+                dateRetour = new java.sql.Date(date_retours.getDate().getTime());
+            } catch (NullPointerException ex) {
+                System.out.println("Erreur lors de la récupération de la date : " + ex.getMessage());
+            }
+
+            modifierConge(Conge, NumEmp, Motif, Nbrjours, date, dateRetour);
+
+
 
 
     }//GEN-LAST:event_btn_Modifier1MouseClicked
@@ -489,32 +546,36 @@ public class Conge extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void btn_recuperer1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_recuperer1MouseClicked
-           int selectedRow = table_Conge.getSelectedRow();
-          if (selectedRow != -1) {
-            String numEmp = (String) table_Conge.getValueAt(selectedRow, 0);
-            String nom = (String) table_Conge.getValueAt(selectedRow, 1);
-            String prenom = (String) table_Conge.getValueAt(selectedRow, 2);
-            int salaire = (int) table_Conge.getValueAt(selectedRow, 3);
-            Date date = (Date) table_Conge.getValueAt(selectedRow, 4);
-            Date date2 = (Date) table_Conge.getValueAt(selectedRow, 5);
-
-            txt_Conge.setText(numEmp);
-            txt_Emp1.setText(nom);
-            txt_Motif.setText(prenom);
-            txt_NbrJours.setText(String.valueOf(salaire));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String dateDebutStr = dateFormat.format(dateDem);
-            String dateRetourStr = dateFormat.format(dateRetour);
-
-            dateDem.setText(dateDebutStr);
-            dateRetour.setText(dateRetourStr);
-        } else {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un Congé à modifier.");
-            return;
-        }// TODO add your handling code here:
+          // TODO add your handling code here:
     }//GEN-LAST:event_btn_recuperer1MouseClicked
 
     private void btn_recuperer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_recuperer1ActionPerformed
+     int selectedRow = table_Conge.getSelectedRow();
+if (selectedRow != -1) {
+    String numConge = (String) table_Conge.getValueAt(selectedRow, 0);
+    String numEmp = (String) table_Conge.getValueAt(selectedRow, 1);
+    String motif = (String) table_Conge.getValueAt(selectedRow, 2);
+    int nbrJours = 0;
+    try {
+        nbrJours = Integer.parseInt(table_Conge.getValueAt(selectedRow, 3).toString());
+    } catch (NumberFormatException ex) {
+        
+    }
+    Date dateDebut = (Date) table_Conge.getValueAt(selectedRow, 4);
+    Date dateRetour = (Date) table_Conge.getValueAt(selectedRow, 5);
+
+ 
+    txt_Conge.setText(numConge);
+    txt_Emp1.setText(numEmp);
+    txt_motif.setSelectedIndex(0);
+    txt_NbrJours.setText(String.valueOf(nbrJours));
+    date_fin.setDate(dateDebut);
+    date_retours.setDate(dateRetour);
+} else {
+    JOptionPane.showMessageDialog(this, "Veuillez sélectionner un Congé à modifier.");
+    return;
+}
+
                     // TODO add your handling code here:
     }//GEN-LAST:event_btn_recuperer1ActionPerformed
 
@@ -559,8 +620,8 @@ public class Conge extends javax.swing.JFrame {
     private javax.swing.JButton btn_Modifier1;
     private javax.swing.JButton btn_Supprimer1;
     private javax.swing.JButton btn_recuperer1;
-    private javax.swing.JTextField dateDem;
-    private javax.swing.JTextField dateRetour;
+    private com.toedter.calendar.JDateChooser date_fin;
+    private com.toedter.calendar.JDateChooser date_retours;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -576,8 +637,8 @@ public class Conge extends javax.swing.JFrame {
     private javax.swing.JTable table_Conge;
     private javax.swing.JTextField txt_Conge;
     private javax.swing.JTextField txt_Emp1;
-    private javax.swing.JTextField txt_Motif;
     private javax.swing.JTextField txt_NbrJours;
+    private javax.swing.JComboBox<String> txt_motif;
     // End of variables declaration//GEN-END:variables
 
     private void modifierConge(String Conge, String NumEmp, String Motif, int Nbrjours, String dateDem, String dateretou) {
